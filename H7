@@ -1,0 +1,42 @@
+        read r1
+        sub r1, 1, r1
+        move r1, r2
+
+inp:    read m(r1)
+        sub r1, 1, r1
+        jpos r1, inp
+
+        move 0, r1
+
+out:    move r1, r3
+
+        add r1, 1, r4
+inner:  sub m(r4), m(r3), r5
+
+        jneg r5, newmin
+
+cont:   add r4, 1, r4
+        sub r2, r4, r5
+        jpos r5, inner
+
+        sub r3, r1, r5
+        jnz r5, swap
+
+back:   add r1, 1, r1
+        sub r2, r1, r4
+        jnz r4, out
+
+        move 0, r1
+echo:   print m(r1)
+        sub r2, r1, r3
+        add r1, 1, r1
+        jnz r3, echo
+        stop
+
+newmin: move r4, r3
+        jump cont
+
+swap:   move m(r1), r5
+        move m(r3), m(r1)
+        move r5, m(r3)
+        jump back
