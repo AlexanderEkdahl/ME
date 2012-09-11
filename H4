@@ -8,4 +8,3 @@ loop:	read r2
 	jnz r1, loop
 	print r3
 	print r4
-	
