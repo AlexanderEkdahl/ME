@@ -1,0 +1,38 @@
+        read r1
+        sub r1, 1, r1 !!hey
+        move r1, r2
+
+inp:    read m(r1)
+        sub r1, 1, r1
+        jpos r1, inp
+
+outer:  move 0, r3
+        move 0, r1
+
+inner:  add r1, 1, r4
+        sub m(r1), m(r4), r5
+        jneg r5, swap
+back:   add r1, 1, r1
+        sub r2, r1, r5
+        jnz r5, inner
+
+        jnz r3, outer
+
+        move 0, r1
+echo:   print m(r1)
+        sub r2, r1, r3
+        add r1, 1, r1
+        jnz r3, echo
+        stop
+
+swap:   move m(r1), r5
+        move m(r4), m(r1)
+        move r5, m(r4)
+        move 1, r3
+        jump back
+
+        !! r1 = loop
+        !! r2 = total N
+        !! r3 = swapped
+        !! r4 = temp for swap
+        !! r5 = temp

@@ -10,7 +10,7 @@ fs.readFile process.argv[2], 'ascii', (err, data) ->
 
   lines = data.split '\n'
   for i in [0...lines.length]
-    lines[i] = lines[i].toLowerCase().replace(/\s\s+|\t/g, ' ').trim()
+    lines[i] = lines[i].toLowerCase().replace(/\s\s+|\t/g, ' ').replace(/!!(.*)$/,'').trim()
     if label = lines[i].match /^(.*): /
       labels[label[1]] = i
       lines[i] = lines[i].substring label[0].length
@@ -39,12 +39,18 @@ fs.readFile process.argv[2], 'ascii', (err, data) ->
     else if match = param.match(/m\(([\d])\)/)
       memory[match[1]] = value
 
+  operations = 0
+
   tick = () ->
-    return if pc >= lines.length
-    cmd = lines[pc].split(' ')[0]
-    params = lines[pc].substring(cmd.length+1).replace(/\s/g, '').split ','
+    if pc >= lines.length
+      cmd = 'stop'
+    else
+      operations++
+      cmd = lines[pc].split(' ')[0]
+      params = lines[pc].substring(cmd.length+1).replace(/\s/g, '').split ','
 
     # console.log "Command: #{cmd}"
+    # console.log "Registers: #{registers}"
 
     switch cmd
       when 'read'
@@ -82,13 +88,13 @@ fs.readFile process.argv[2], 'ascii', (err, data) ->
           pc++
         tick()
       when 'jnz'
-        if getValue(params[0]) != 0
+        if parseInt(getValue(params[0])) != 0
           pc = labels[params[1]]
         else
           pc++
         tick()
       when 'jz'
-        if getValue(params[0]) == '0' or getValue(params[0]) == 0
+        if parseInt(getValue(params[0])) == 0
           pc = labels[params[1]]
         else
           pc++
@@ -108,5 +114,7 @@ fs.readFile process.argv[2], 'ascii', (err, data) ->
         setValue(params[2], Math.floor(getValue(params[0]) / getValue(params[1])))
         pc++
         tick()
+      when 'stop'
+        console.log "#{operations} operations"
 
   tick()
