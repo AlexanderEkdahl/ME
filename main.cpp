@@ -19,7 +19,7 @@ int main(int argv, char* argc[])
 {
 	///////////
 
-	ifstream file("H7"/*argc[1]*/);
+	ifstream file(argc[1]);
 	if(!file.is_open())
 		exit(1); // couldnt open file
 
@@ -32,8 +32,6 @@ int main(int argv, char* argc[])
 	}
 
 	////////////
-
-	ofstream outfile("tmp.txt");
 
 	struct L
 	{
@@ -76,9 +74,6 @@ int main(int argv, char* argc[])
 		}
 		replace = " ";
 		lines[i] = tr1::regex_replace(lines[i], pattern, replace);
-
-		cout << lines[i] << endl;
-		outfile << lines[i] << endl;
 	}
 
 
