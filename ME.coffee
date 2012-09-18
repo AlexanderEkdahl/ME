@@ -4,13 +4,14 @@ fs = require 'fs'
 rl = rl.createInterface
   input: process.stdin,
   output: process.stdout
+rl.pause()
 
 fs.readFile process.argv[2], 'ascii', (err, data) ->
   labels = {}
 
   lines = data.split '\n'
   for i in [0...lines.length]
-    lines[i] = lines[i].toLowerCase().replace(/\s\s+|\t/g, ' ').replace(/!!(.*)$/,'').trim()
+    lines[i] = lines[i].trim().toLowerCase().replace(/\s\s+|\t/g, ' ').replace(/!!(.*)$/,'')
     if label = lines[i].match /^(.*): /
       labels[label[1]] = i
       lines[i] = lines[i].substring label[0].length
@@ -18,6 +19,7 @@ fs.readFile process.argv[2], 'ascii', (err, data) ->
   registers = (0 for [0..4])
   memory = (0 for [0..15])
   pc = 0
+  operations = 0
 
   getValue = (param) ->
     # console.log "getValue #{param}"
@@ -38,8 +40,6 @@ fs.readFile process.argv[2], 'ascii', (err, data) ->
       memory[registers[match[1]-1]] = value
     else if match = param.match(/m\(([\d])\)/)
       memory[match[1]] = value
-
-  operations = 0
 
   tick = () ->
     if pc >= lines.length
@@ -116,5 +116,9 @@ fs.readFile process.argv[2], 'ascii', (err, data) ->
         tick()
       when 'stop'
         console.log "#{operations} operations"
+      when 'mod'
+        setValue(params[2], Math.floor(getValue(params[0]) % getValue(params[1])))
+        pc++
+        tick()
 
   tick()

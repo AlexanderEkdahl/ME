@@ -1,10 +1,10 @@
-	read r1
-	read r2
-	add r1, r2, r3
-	print r3
-	sub r1, r2, r3
-	print r3
-	mul r1, r2, r3
-	print r3
-	div r1, r2, r3
-	print r3
+        read r1
+        read r2
+        add r1, r2, r3
+        print r3
+        sub r1, r2, r3
+        print r3
+        mul r1, r2, r3
+        print r3
+        div r1, r2, r3
+        print r3
