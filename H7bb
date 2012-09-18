@@ -1,5 +1,7 @@
         read r1
-        sub r1, 1, r1 !!hey
+        sub r1, 2, r1
+        jneg r1, quit
+        add r1, 1, r1
         move r1, r2
 
 inp:    read m(r1)
@@ -23,7 +25,7 @@ echo:   print m(r1)
         sub r2, r1, r3
         add r1, 1, r1
         jnz r3, echo
-        stop
+quit:   stop
 
 swap:   move m(r1), r5
         move m(r4), m(r1)
