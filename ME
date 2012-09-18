@@ -2,13 +2,12 @@
 
 lines = []
 labels = {}
-
 $registers = [0] * 5
 $memory = [0] * 15
 pc = 0
 
 File.readlines(ARGV[0]).each do |line|
-  if (line = line.gsub(/!!(.*)$/,'').strip.gsub(/\s\s+|\t/,' ').downcase) != ''
+  if (line = line.gsub(/!(.*)$/,'').strip.gsub(/\s\s+|\t/,' ').downcase) != ''
     if (label = line.match(/^(.*):\s/))
       labels[label[1]] = lines.length
       line = line[label[0].length..-1]
@@ -48,13 +47,13 @@ while pc < lines.length
   when 'move'
     set params[1], get(params[0])
   when 'add'
-    set(params[2], get(params[0]) + get(params[1]))
+    set params[2], get(params[0]) + get(params[1])
   when 'sub'
-    set(params[2], get(params[0]) - get(params[1]))
+    set params[2], get(params[0]) - get(params[1])
   when 'mul'
-    set(params[2], get(params[0]) * get(params[1]))
+    set params[2], get(params[0]) * get(params[1])
   when 'div'
-    set(params[2], get(params[0]) / get(params[1]))
+    set params[2], get(params[0]) / get(params[1])
   when 'jump'
     pc = labels[params[0]]
   when 'jpos'
