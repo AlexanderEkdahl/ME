@@ -1,0 +1,10 @@
+        move 10,r2              ! parameter i första anropet
+        move bk1,r5             ! plats att återvända till i första anropet
+        jump write
+bk1:    move 20,r2              ! parameter i andra anropet
+        move bk2,r5             ! plats att återvända till i andra anropet
+        jump write
+bk2:    stop
+write:  mul r2,r2,r2            ! subrutinen: kvadrera parametern r2
+        print r2                ! skriv ut r2
+        jump  r5                ! hoppa tillbaka

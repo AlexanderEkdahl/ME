@@ -1,15 +1,15 @@
 #!/usr/bin/env ruby
 
 lines = []
-labels = {}
+$labels = {}
 $registers = [0] * 5
 $memory = [0] * 15
-pc = 0
+$pc = 0
 
 File.readlines(ARGV[0]).each do |line|
   if (line = line.gsub(/!(.*)$/,'').strip.gsub(/\s\s+|\t/,' ').downcase) != ''
-    if (label = line.match(/^(.*):\s/))
-      labels[label[1]] = lines.length
+    if (label = line.match(/^([a-z].*):\s/)) ## Must begin with a alpabetic number
+      $labels[label[1]] = lines.length
       line = line[label[0].length..-1]
     end
     lines.push line
@@ -33,42 +33,44 @@ def get param
     $memory[$registers[match[1].to_i-1]]
   elsif match = param.match(/m\(([\d])\)/)
     $memory[match[1].to_i]
+  elsif $labels[param]
+    $labels[param]
   else
     param.to_i
   end
 end
 
-while pc < lines.length
-  cmd = lines[pc].split[0]
-  params = lines[pc][cmd.length..-1].gsub(/\s/, '').split ','
-  pc += 1
+while $pc < lines.length
+  cmd = lines[$pc].split[0]
+  p = lines[$pc][cmd.length..-1].gsub(/\s/, '').split ','
+  $pc += 1
 
   case cmd
   when 'move'
-    set params[1], get(params[0])
+    set p[1], get(p[0])
   when 'add'
-    set params[2], get(params[0]) + get(params[1])
+    set p[2], get(p[0]) + get(p[1])
   when 'sub'
-    set params[2], get(params[0]) - get(params[1])
+    set p[2], get(p[0]) - get(p[1])
   when 'mul'
-    set params[2], get(params[0]) * get(params[1])
+    set p[2], get(p[0]) * get(p[1])
   when 'div'
-    set params[2], get(params[0]) / get(params[1])
+    set p[2], get(p[0]) / get(p[1])
   when 'jump'
-    pc = labels[params[0]]
+    $pc = get(p[0])
   when 'jpos'
-    pc = labels[params[1]] if get(params[0]) >= 0
+    $pc = get(p[1]) if get(p[0]) >= 0
   when 'jneg'
-    pc = labels[params[1]] if get(params[0]) < 0
+    $pc = get(p[1]) if get(p[0]) < 0
   when 'jz'
-    pc = labels[params[1]] if get(params[0]) == 0
+    $pc = get(p[1]) if get(p[0]) == 0
   when 'jnz'
-    pc = labels[params[1]] if get(params[0]) != 0
+    $pc = get(p[1]) if get(p[0]) != 0
   when 'read'
     print 'Input: '
-    set params[0], STDIN.gets.chomp()
+    set p[0], STDIN.gets.chomp()
   when 'print'
-    puts get params[0]
+    puts get p[0]
   when 'stop'
     break
   end
