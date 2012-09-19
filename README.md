@@ -158,6 +158,24 @@ När det gäller subrutiner finns det tre problem som måste lösas:
 
 I nedanstående programavsnitt visar vi ett exempel med en subrutin write som kvadrerar och skriver ut innehållet i register R2. Subrutinen anropas från två platser i programmet, med parametervärdet 10 respektive 20.
 
-    Kommer snart
+            move 10,r2              ! parameter i första anropet
+            move bk1,r5             ! plats att återvända till i första anropet
+            jump write
+    bk1:    move 20,r2              ! parameter i andra anropet
+            move bk2,r5             ! plats att återvända till i andra anropet
+            jump write
+    bk2:    stop
+    write:  mul r2,r2,r2            ! subrutinen: kvadrera parametern r2
+            print r2                ! skriv ut r2
+            jump  r5                ! hoppa tillbaka
 
-Som synes har vi utökat assemblerspråket som beskrevs i tabell 1 med möjligheten att ladda in ett läge i ett register och att hoppa till det läge som finns i ett register.
+Som synes har vi utökat assemblerspråket som beskrevs i tabellen med möjligheten att ladda in ett läge i ett register och att hoppa till det läge som finns i ett register.
+
+Användning
+-------------------------
+
+    ./ME filename
+
+Exempel
+
+    ./ME examples/H7ss

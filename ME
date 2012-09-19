@@ -8,7 +8,7 @@ $pc = 0
 
 File.readlines(ARGV[0]).each do |line|
   if (line = line.gsub(/!(.*)$/,'').strip.gsub(/\s\s+|\t/,' ').downcase) != ''
-    if (label = line.match(/^([a-z].*):\s/)) ## Must begin with a alpabetic number
+    if (label = line.match(/^([a-z].*):\s/))
       $labels[label[1]] = lines.length
       line = line[label[0].length..-1]
     end
