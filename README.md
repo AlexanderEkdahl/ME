@@ -1,3 +1,12 @@
+Användning
+================================
+
+    ./ME filename
+
+Exempel
+
+    ./ME examples/H7ss
+
 ME – en dator
 ================================
 
@@ -170,12 +179,3 @@ I nedanstående programavsnitt visar vi ett exempel med en subrutin write som kv
             jump  r5                ! hoppa tillbaka
 
 Som synes har vi utökat assemblerspråket som beskrevs i tabellen med möjligheten att ladda in ett läge i ett register och att hoppa till det läge som finns i ett register.
-
-Användning
--------------------------
-
-    ./ME filename
-
-Exempel
-
-    ./ME examples/H7ss
