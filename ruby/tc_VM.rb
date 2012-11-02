@@ -1,4 +1,4 @@
-require 'VM'
+require_relative 'VM'
 require 'test/unit'
 
 class TestExamples < Test::Unit::TestCase
