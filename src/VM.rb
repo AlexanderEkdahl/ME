@@ -57,22 +57,22 @@ class VM
   private
 
   def set param, value
-    if match = param.match(/^r([1-5])/)
-      @registers[match[1].to_i-1] = value.to_i
-    elsif match = param.match(/m\(r([1-5])\)/)
-      @memory[@registers[match[1].to_i-1]] = value.to_i
-    elsif match = param.match(/m\(([\d])\)/)
-      @memory[match[1].to_i] = value.to_i
+    if param.match(/^r([1-5])/)
+      @registers[$1.to_i-1] = value.to_i
+    elsif param.match(/m\(r([1-5])\)/)
+      @memory[@registers[$1.to_i-1]] = value.to_i
+    elsif param.match(/m\(([\d])\)/)
+      @memory[$1.to_i] = value.to_i
     end
   end
 
   def get param
-    if match = param.match(/^r([1-5])/)
-      @registers[match[1].to_i-1]
-    elsif match = param.match(/m\(r([1-5])\)/)
-      @memory[@registers[match[1].to_i-1]]
-    elsif match = param.match(/m\(([\d])\)/)
-      @memory[match[1].to_i]
+    if param.match(/^r([1-5])/)
+      @registers[$1.to_i-1]
+    elsif param.match(/m\(r([1-5])\)/)
+      @memory[@registers[$1.to_i-1]]
+    elsif param.match(/m\(([\d])\)/)
+      @memory[$1.to_i]
     elsif @labels[param]
       @labels[param]
     else
