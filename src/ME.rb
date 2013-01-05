@@ -11,7 +11,7 @@ class ME
       unless line.empty?
         if line =~ /(^[a-z].*):\s+/
           @labels[$1] = @lines.length
-          line = line[$~[0].length..-1]
+          line = line[$&.length..-1]
         end
         @lines.push line
       end
