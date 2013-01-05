@@ -9,9 +9,9 @@ class ME
     input.lines do |line|
       line = line.gsub(/(!.*)$/,'').strip.downcase
       unless line.empty?
-        if line =~ /(^([a-z].*):\s+)/
-          @labels[$2] = @lines.length
-          line = line[$1.length..-1]
+        if line =~ /(^[a-z].*):\s+/
+          @labels[$1] = @lines.length
+          line = line[$~[0].length..-1]
         end
         @lines.push line
       end
