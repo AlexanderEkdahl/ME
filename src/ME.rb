@@ -1,4 +1,4 @@
-class VM
+class ME
   def initialize input
     @lines = []
     @labels = {}
@@ -7,20 +7,21 @@ class VM
     @pc = 0
 
     input.lines do |line|
-      if (line = line.gsub(/!(.*)$/,'').strip.gsub(/\s\s+|\t/,' ').downcase) != ''
-        if (label = line.match(/^([a-z].*):\s/))
-          @labels[label[1]] = @lines.length
-          line = line[label[0].length..-1]
+      line = line.gsub(/(!.*)$/,'').strip.downcase
+      unless line.empty?
+        if line =~ /(^([a-z].*):\s+)/
+          @labels[$2] = @lines.length
+          line = line[$1.length..-1]
         end
         @lines.push line
       end
     end
   end
 
-  def run &block
+  def run
     while @pc < @lines.length
-      cmd = @lines[@pc].split[0]
-      p = @lines[@pc][cmd.length..-1].gsub(/\s/, '').split ','
+      cmd = @lines[@pc].split.first
+      p = @lines[@pc][cmd.length..-1].split(',').map(&:strip)
       @pc += 1
 
       case cmd
@@ -45,7 +46,7 @@ class VM
       when 'jnz'
         @pc = get(p[1]) if get(p[0]) != 0
       when 'read'
-        set p[0], block.call(nil)
+        set p[0], yield(nil)
       when 'print'
         yield get p[0]
       when 'stop'
@@ -54,29 +55,17 @@ class VM
     end
   end
 
-  private
-
   def set param, value
-    if param.match(/^r([1-5])/)
-      @registers[$1.to_i-1] = value.to_i
-    elsif param.match(/m\(r([1-5])\)/)
-      @memory[@registers[$1.to_i-1]] = value.to_i
-    elsif param.match(/m\(([\d])\)/)
-      @memory[$1.to_i] = value.to_i
-    end
+    @registers[$1.to_i-1] = value.to_i          if param =~ /^r([1-5])/
+    @memory[@registers[$1.to_i-1]] = value.to_i if param =~ /m\(r([1-5])\)/
+    @memory[$1.to_i] = value.to_i               if param =~ /m\(([\d])\)/
   end
 
   def get param
-    if param.match(/^r([1-5])/)
-      @registers[$1.to_i-1]
-    elsif param.match(/m\(r([1-5])\)/)
-      @memory[@registers[$1.to_i-1]]
-    elsif param.match(/m\(([\d])\)/)
-      @memory[$1.to_i]
-    elsif @labels[param]
-      @labels[param]
-    else
-      param.to_i
-    end
+    return @registers[$1.to_i-1]                if param =~ /^r([1-5])/
+    return @memory[@registers[$1.to_i-1]]       if param =~ /m\(r([1-5])\)/
+    return @memory[$1.to_i]                     if param =~ /m\(([\d])\)/
+    return @labels[param]                       if @labels[param]
+    param.to_i
   end
 end

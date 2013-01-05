@@ -1,4 +1,4 @@
-require_relative 'VM'
+require_relative 'ME'
 require 'test/unit'
 
 class TestExamples < Test::Unit::TestCase
@@ -6,7 +6,7 @@ class TestExamples < Test::Unit::TestCase
     inp = [22, 34]
     out = []
 
-    VM.new(File.read '../examples/H3').run do |output|
+    ME.new(File.read '../examples/H3').run do |output|
       unless output
         next inp.shift
       end
@@ -20,7 +20,7 @@ class TestExamples < Test::Unit::TestCase
     inp = [3, 23, 2, 12]
     out = []
 
-    VM.new(File.read '../examples/H4').run do |output|
+    ME.new(File.read '../examples/H4').run do |output|
       unless output
         next inp.shift
       end
@@ -34,7 +34,7 @@ class TestExamples < Test::Unit::TestCase
     inp = [413, 23, 13, -3, -2, 0]
     out = []
 
-    VM.new(File.read '../examples/H5').run do |output|
+    ME.new(File.read '../examples/H5').run do |output|
       unless output
         next inp.shift
       end
@@ -48,7 +48,7 @@ class TestExamples < Test::Unit::TestCase
     inp = [3, 543, 12, 234]
     out = []
 
-    VM.new(File.read '../examples/H7ss').run do |output|
+    ME.new(File.read '../examples/H7ss').run do |output|
       unless output
         next inp.shift
       end
@@ -62,7 +62,7 @@ class TestExamples < Test::Unit::TestCase
     inp = [3, 543, 12, 234]
     out = []
 
-    VM.new(File.read '../examples/H7bb').run do |output|
+    ME.new(File.read '../examples/H7bb').run do |output|
       unless output
         next inp.shift
       end
@@ -70,5 +70,15 @@ class TestExamples < Test::Unit::TestCase
     end
 
     assert_equal [12, 234, 543].reverse, out
+  end
+
+  def test_subroutines
+    out = []
+
+    ME.new(File.read '../examples/subroutines').run do |output|
+      out.push output
+    end
+
+    assert_equal [100, 400], out
   end
 end
