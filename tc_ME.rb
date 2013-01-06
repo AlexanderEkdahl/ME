@@ -1,15 +1,10 @@
 require 'test/unit'
 
 def me file, input = []
-  `./ME #{file} #{input.join(' ')}`.split.map(&:to_i)
+  `ruby ME.rb #{file} #{input.join(' ')}`.split.map(&:to_i)
 end
 
 class TestExamples < Test::Unit::TestCase
-  def test_read
-    out = me 'examples/read', [23]
-    assert_equal out, [23]
-  end
-
   def test_H3
     out = me 'examples/H3', [22, 34]
     assert_equal out, [56, -12, 748, 0]

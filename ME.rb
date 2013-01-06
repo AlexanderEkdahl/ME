@@ -1,10 +1,8 @@
-#!/usr/bin/env ruby
-
 lines = []
 pc = 0
 $labels = {}
 $registers = [0] * 5
-$memory = [0] * 15
+$memory = [0] * 1000
 
 def set param, value
   $registers[$1.to_i-1] = value.to_i          if param =~ /^r([1-5])/
@@ -21,9 +19,9 @@ def get param
 end
 
 File.read(ARGV.shift).lines do |line|
-  line = line.gsub(/(!.*)$/,'').strip.downcase
+  line = line.gsub /!.*$/,''
   unless line.empty?
-    if line =~ /(^[a-z].*):\s+/
+    if line =~ /(^\w.*):\s+/
       $labels[$1] = lines.length
       line = line[$&.length..-1]
     end
@@ -32,8 +30,7 @@ File.read(ARGV.shift).lines do |line|
 end
 
 while pc < lines.length
-  cmd = lines[pc].split.first
-  p = lines[pc][cmd.length..-1].split(',').map(&:strip)
+  cmd, *p = lines[pc].scan /[\w|\d|\(|\)]+/
   pc += 1
 
   case cmd
@@ -58,7 +55,7 @@ while pc < lines.length
   when 'jnz'
     pc = get(p[1]) if get(p[0]) != 0
   when 'read'
-    set p[0], (ARGV.shift || STDIN.gets.chomp())
+    set p[0], (ARGV.shift || (print 'Input: '; STDIN.gets.chomp()))
   when 'print'
     puts get p[0]
   when 'stop'

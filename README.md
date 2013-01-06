@@ -1,11 +1,11 @@
 Användning
 ================================
 
-    ./ME filename
+    ruby ME.rb filename [input]
 
 Exempel
 
-    ./ME examples/H7ss
+    ruby ME.rb examples/H7ss
 
 ME – en dator
 ================================
