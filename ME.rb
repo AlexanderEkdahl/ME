@@ -19,7 +19,7 @@ def get p
 end
 
 File.read(ARGV.shift).lines do |line|
-  line.gsub! /!.*$/, ''
+  line.sub! /!.*/, ''
   if line =~ /(\w+):(.*)$/
     $labels[$1] = lines.length
     line = $2
