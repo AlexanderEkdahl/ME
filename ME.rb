@@ -4,33 +4,31 @@ $labels = {}
 $registers = [0] * 5
 $memory = [0] * 1000
 
-def set param, value
-  $registers[$1.to_i-1] = value.to_i          if param =~ /^r([1-5])/
-  $memory[$registers[$1.to_i-1]] = value.to_i if param =~ /m\(r([1-5])\)/
-  $memory[$1.to_i] = value.to_i               if param =~ /m\(([\d])\)/
+def set p, value
+  $registers[$1.to_i-1] = value.to_i          if p =~ /^r([1-5])/
+  $memory[$registers[$1.to_i-1]] = value.to_i if p =~ /m\(r([1-5])\)/
+  $memory[$1.to_i] = value.to_i               if p =~ /m\(([\d])\)/
 end
 
-def get param
-  return $registers[$1.to_i-1]                if param =~ /^r([1-5])/
-  return $memory[$registers[$1.to_i-1]]       if param =~ /m\(r([1-5])\)/
-  return $memory[$1.to_i]                     if param =~ /m\(([\d])\)/
-  return $labels[param]                       if $labels[param]
-  param.to_i
+def get p
+  return $registers[$1.to_i-1]                if p =~ /^r([1-5])/
+  return $memory[$registers[$1.to_i-1]]       if p =~ /m\(r([1-5])\)/
+  return $memory[$1.to_i]                     if p =~ /m\(([\d])\)/
+  return $labels[p]                           if $labels[p]
+  p.to_i
 end
 
 File.read(ARGV.shift).lines do |line|
-  line = line.gsub /!.*$/,''
-  unless line.empty?
-    if line =~ /(^\w.*):\s+/
-      $labels[$1] = lines.length
-      line = line[$&.length..-1]
-    end
-    lines.push line
+  line.gsub! /!.*$/, ''
+  if line =~ /(\w+):(.*)$/
+    $labels[$1] = lines.length
+    line = $2
   end
+  lines.push line
 end
 
 while pc < lines.length
-  cmd, *p = lines[pc].scan /[\w|\d|\(|\)]+/
+  cmd, *p = lines[pc].scan /[\w\(\)]+/
   pc += 1
 
   case cmd
@@ -55,7 +53,7 @@ while pc < lines.length
   when 'jnz'
     pc = get(p[1]) if get(p[0]) != 0
   when 'read'
-    set p[0], (ARGV.shift || (print 'Input: '; STDIN.gets.chomp()))
+    set p[0], (ARGV.shift || (print 'Input: '; STDIN.gets.chomp))
   when 'print'
     puts get p[0]
   when 'stop'
