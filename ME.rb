@@ -1,8 +1,8 @@
 lines = File.readlines ARGV.shift
 pc = 0
 $labels = {}
-$registers = [0] * 5
-$memory = [0] * 1000
+$r = [0] * 5
+$m = [0] * 1000
 
 lines.each_with_index do |line, index|
   $labels[$1] = index if line =~ /(\w+):/
@@ -10,16 +10,16 @@ lines.each_with_index do |line, index|
 end
 
 def set p, value
-  $registers[$1.to_i-1] = value.to_i          if p =~ /^r([1-5])/
-  $memory[$registers[$1.to_i-1]] = value.to_i if p =~ /m\(r([1-5])\)/
-  $memory[$1.to_i] = value.to_i               if p =~ /m\(([\d])\)/
+  $r[$1.to_i-1] = value.to_i     if p =~ /^r([1-5])/
+  $m[$r[$1.to_i-1]] = value.to_i if p =~ /m\(r([1-5])\)/
+  $m[$1.to_i] = value.to_i       if p =~ /m\(([\d])\)/
 end
 
 def get p
-  return $registers[$1.to_i-1]                if p =~ /^r([1-5])/
-  return $memory[$registers[$1.to_i-1]]       if p =~ /m\(r([1-5])\)/
-  return $memory[$1.to_i]                     if p =~ /m\(([\d])\)/
-  return $labels[p]                           if $labels[p]
+  return $r[$1.to_i-1]           if p =~ /^r([1-5])/
+  return $m[$r[$1.to_i-1]]       if p =~ /m\(r([1-5])\)/
+  return $m[$1.to_i]             if p =~ /m\(([\d])\)/
+  return $labels[p]              if $labels[p]
   p.to_i
 end
 
