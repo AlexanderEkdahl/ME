@@ -11,14 +11,14 @@ end
 
 def set p, value
   $r[$1.to_i-1] = value.to_i     if p =~ /^r([1-5])/
+  $m[$1] = value.to_i            if p =~ /m\(([\d])\)/
   $m[$r[$1.to_i-1]] = value.to_i if p =~ /m\(r([1-5])\)/
-  $m[$1.to_i] = value.to_i       if p =~ /m\(([\d])\)/
 end
 
 def get p
   return $r[$1.to_i-1]           if p =~ /^r([1-5])/
+  return $m[$1]                  if p =~ /m\(([\d])\)/
   return $m[$r[$1.to_i-1]]       if p =~ /m\(r([1-5])\)/
-  return $m[$1.to_i]             if p =~ /m\(([\d])\)/
   return $labels[p]              if $labels[p]
   p.to_i
 end

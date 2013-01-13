@@ -1,16 +1,14 @@
-Användning
-================================
-
-    ruby ME.rb filename [input]
-
-Exempel
-
-    ruby ME.rb examples/H7ss
-
 ME – en dator
 ================================
 
-*[Källa](http://fileadmin.cs.lth.se/cs/Education/EDA070/lectures/lagniva/mebeskrivning.pdf)*
+Användning
+-------------------------
+
+    ruby ME.rb filename [input]
+
+Exempel:
+
+    ruby ME.rb examples/H7ss
 
 Inledning
 -------------------------
@@ -179,3 +177,5 @@ I nedanstående programavsnitt visar vi ett exempel med en subrutin write som kv
             jump  r5                ! hoppa tillbaka
 
 Som synes har vi utökat assemblerspråket som beskrevs i tabellen med möjligheten att ladda in ett läge i ett register och att hoppa till det läge som finns i ett register.
+
+*[Källa](http://fileadmin.cs.lth.se/cs/Education/EDA070/lectures/lagniva/mebeskrivning.pdf)*
