@@ -18,8 +18,8 @@ def get p
   p.to_i
 end
 
-File.read(ARGV.shift).lines do |line|
-  line.sub! /!.*/, ''
+File.readlines(ARGV.shift).each do |line|
+  line.sub!(/!.*/, '')
   if line =~ /(\w+):(.*)$/
     $labels[$1] = lines.length
     line = $2
@@ -28,7 +28,7 @@ File.read(ARGV.shift).lines do |line|
 end
 
 while pc < lines.length
-  cmd, *p = lines[pc].scan /[\w\(\)]+/
+  cmd, *p = lines[pc].scan(/[\w\(\)]+/)
   pc += 1
 
   case cmd
