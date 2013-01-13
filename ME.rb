@@ -1,8 +1,13 @@
-lines = []
+lines = File.readlines ARGV.shift
 pc = 0
 $labels = {}
 $registers = [0] * 5
 $memory = [0] * 1000
+
+lines.each_with_index do |line, index|
+  $labels[$1] = index if line =~ /(\w+):/
+  line.gsub!(/((\w+):|!.*)/, '')
+end
 
 def set p, value
   $registers[$1.to_i-1] = value.to_i          if p =~ /^r([1-5])/
@@ -16,15 +21,6 @@ def get p
   return $memory[$1.to_i]                     if p =~ /m\(([\d])\)/
   return $labels[p]                           if $labels[p]
   p.to_i
-end
-
-File.readlines(ARGV.shift).each do |line|
-  line.sub!(/!.*/, '')
-  if line =~ /(\w+):(.*)$/
-    $labels[$1] = lines.length
-    line = $2
-  end
-  lines.push line
 end
 
 while pc < lines.length
