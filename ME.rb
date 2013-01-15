@@ -6,7 +6,7 @@ $m = [0] * 1000
 
 lines.each_with_index do |line, index|
   $labels[$1] = index if line =~ /(\w+):/
-  line.gsub!(/((\w+):|!.*)/, '')
+  line.gsub!(/\w+:|!.*/, '')
 end
 
 def set p, value
