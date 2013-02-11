@@ -13,7 +13,7 @@ outer:  move 0, r3
 
 inner:  add r1, 1, r4
         sub m(r1), m(r4), r5
-        jneg r5, swap
+        jpos r5, swap
 back:   add r1, 1, r1
         sub r2, r1, r5
         jnz r5, inner

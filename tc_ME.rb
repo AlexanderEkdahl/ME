@@ -23,11 +23,15 @@ class TestExamples < Test::Unit::TestCase
   def test_H7ss
     out = me 'examples/H7ss', [3, 543, 12, 234]
     assert_equal out, [12, 234, 543]
+    out = me 'examples/H7ss', [0]
+    assert_equal out, []
   end
 
   def test_H7bb
     out = me 'examples/H7bb', [3, 543, 12, 234]
-    assert_equal out, [543, 234, 12]
+    assert_equal out, [12, 234, 543]
+    out = me 'examples/H7bb', [0]
+    assert_equal out, []
   end
 
   def test_subroutines
