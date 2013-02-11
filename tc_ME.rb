@@ -8,32 +8,27 @@ class TestExamples < Test::Unit::TestCase
   @@sorted_array   =  (-10..10).to_a
   @@shuffled_array = @@sorted_array.shuffle(random: Random.new(0))
 
-  def test_H3
-    out = me 'examples/H3', [22, 34]
+  def test_simple
+    out = me 'examples/simple', [22, 34]
     assert_equal out, [56, -12, 748, 0]
   end
 
-  def test_H4
-    out = me 'examples/H4', [3, 23, 2, 12]
+  def test_sum_product
+    out = me 'examples/sum_product', [3, 23, 2, 12]
     assert_equal out, [37, 552]
   end
 
-  def test_H5
-    out = me 'examples/H5', [413, 23, 13, -3, -2, 0]
-    assert_equal out, [2, 3]
-  end
-
-  def test_H7ss
-    out = me 'examples/H7ss', [@@shuffled_array.length, *@@shuffled_array]
+  def test_selection_sort
+    out = me 'examples/selection_sort', [@@shuffled_array.length, *@@shuffled_array]
     assert_equal out, @@sorted_array
-    out = me 'examples/H7ss', [0]
+    out = me 'examples/selection_sort', [0]
     assert_equal out, []
   end
 
-  def test_H7bb
-    out = me 'examples/H7bb', [@@shuffled_array.length, *@@shuffled_array]
+  def test_bubble_sort
+    out = me 'examples/bubble_sort', [@@shuffled_array.length, *@@shuffled_array]
     assert_equal out, @@sorted_array
-    out = me 'examples/H7bb', [0]
+    out = me 'examples/bubble_sort', [0]
     assert_equal out, []
   end
 
