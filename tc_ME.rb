@@ -5,6 +5,9 @@ def me file, input = []
 end
 
 class TestExamples < Test::Unit::TestCase
+  @@sorted_array   =  (-10..10).to_a
+  @@shuffled_array = @@sorted_array.shuffle(random: Random.new(0))
+
   def test_H3
     out = me 'examples/H3', [22, 34]
     assert_equal out, [56, -12, 748, 0]
@@ -21,15 +24,15 @@ class TestExamples < Test::Unit::TestCase
   end
 
   def test_H7ss
-    out = me 'examples/H7ss', [3, 543, 12, 234]
-    assert_equal out, [12, 234, 543]
+    out = me 'examples/H7ss', [@@shuffled_array.length, *@@shuffled_array]
+    assert_equal out, @@sorted_array
     out = me 'examples/H7ss', [0]
     assert_equal out, []
   end
 
   def test_H7bb
-    out = me 'examples/H7bb', [3, 543, 12, 234]
-    assert_equal out, [12, 234, 543]
+    out = me 'examples/H7bb', [@@shuffled_array.length, *@@shuffled_array]
+    assert_equal out, @@sorted_array
     out = me 'examples/H7bb', [0]
     assert_equal out, []
   end
