@@ -10,17 +10,29 @@ lines.each_with_index do |line, index|
 end
 
 def set p, value
-  $r[$1.to_i-1] = value.to_i     if p =~ /^r([1-5])/
-  $m[$1] = value.to_i            if p =~ /m\(([\d])\)/
-  $m[$r[$1.to_i-1]] = value.to_i if p =~ /m\(r([1-5])\)/
+  case p
+  when /^r([1-5])/
+    $r[$1.to_i-1] = value.to_i
+  when /m\(([\d])\)/
+    $m[$1] = value.to_i
+  when /m\(r([1-5])\)/
+    $m[$r[$1.to_i-1]] = value.to_i
+  end
 end
 
 def get p
-  return $r[$1.to_i-1]           if p =~ /^r([1-5])/
-  return $m[$1]                  if p =~ /m\(([\d])\)/
-  return $m[$r[$1.to_i-1]]       if p =~ /m\(r([1-5])\)/
-  return $labels[p]              if $labels[p]
-  p.to_i
+  return $labels[p] if $labels[p]
+
+  case p
+  when /^r([1-5])/
+    return $r[$1.to_i-1]
+  when /m\(([\d])\)/
+    return $m[$1]
+  when /m\(r([1-5])\)/
+    return $m[$r[$1.to_i-1]]
+  else
+    p.to_i
+  end
 end
 
 while pc < lines.length
