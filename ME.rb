@@ -33,31 +33,18 @@ while pc < lines.length
   pc += 1
 
   case cmd
-  when 'move'
-    set p[1], get(p[0])
-  when 'add'
-    set p[2], get(p[0]) + get(p[1])
-  when 'sub'
-    set p[2], get(p[0]) - get(p[1])
-  when 'mul'
-    set p[2], get(p[0]) * get(p[1])
-  when 'div'
-    set p[2], get(p[0]) / get(p[1])
-  when 'jump'
-    pc = get(p[0])
-  when 'jpos'
-    pc = get(p[1]) if get(p[0]) >= 0
-  when 'jneg'
-    pc = get(p[1]) if get(p[0]) < 0
-  when 'jz'
-    pc = get(p[1]) if get(p[0]) == 0
-  when 'jnz'
-    pc = get(p[1]) if get(p[0]) != 0
-  when 'read'
-    set p[0], (ARGV.shift || (print 'Input: '; STDIN.gets.chomp))
-  when 'print'
-    puts get p[0]
-  when 'stop'
-    break
+  when 'move' then set(p[1], get(p[0]))
+  when 'add'  then set(p[2], get(p[0]) + get(p[1]))
+  when 'sub'  then set(p[2], get(p[0]) - get(p[1]))
+  when 'mul'  then set(p[2], get(p[0]) * get(p[1]))
+  when 'div'  then set(p[2], get(p[0]) / get(p[1]))
+  when 'jump' then pc = get(p[0])
+  when 'jpos' then pc = get(p[1]) if get(p[0]) >= 0
+  when 'jneg' then pc = get(p[1]) if get(p[0]) < 0
+  when 'jz'   then pc = get(p[1]) if get(p[0]) == 0
+  when 'jnz'  then pc = get(p[1]) if get(p[0]) != 0
+  when 'read' then set(p[0], (ARGV.shift || (print 'Input: '; STDIN.gets.chomp)))
+  when 'print'then puts get p[0]
+  when 'stop' then break
   end
 end
