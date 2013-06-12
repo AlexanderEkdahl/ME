@@ -11,28 +11,21 @@ end
 
 def set p, value
   case p
-  when /^r([1-5])/
-    $r[$1.to_i-1] = value.to_i
-  when /m\(([\d])\)/
-    $m[$1] = value.to_i
-  when /m\(r([1-5])\)/
-    $m[$r[$1.to_i-1]] = value.to_i
+  when /^r([1-5])/     then $r[$1.to_i-1] = value.to_i
+  when /m\(([\d])\)/   then $m[$1] = value.to_i
+  when /m\(r([1-5])\)/ then $m[$r[$1.to_i-1]] = value.to_i
   end
 end
 
 def get p
   return $labels[p] if $labels[p]
 
-  case p
-  when /^r([1-5])/
-    return $r[$1.to_i-1]
-  when /m\(([\d])\)/
-    return $m[$1]
-  when /m\(r([1-5])\)/
-    return $m[$r[$1.to_i-1]]
-  else
-    p.to_i
-  end
+  return case p
+         when /^r([1-5])/     then $r[$1.to_i-1]
+         when /m\(([\d])\)/   then $m[$1]
+         when /m\(r([1-5])\)/ then $m[$r[$1.to_i-1]]
+         else p.to_i
+         end
 end
 
 while pc < lines.length
